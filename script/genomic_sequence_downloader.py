@@ -352,6 +352,8 @@ def download_via_synteny_conservation():
         )
 
 
+def main(target_gene_name, 1st_downstream_flanking_gene_name, 2nd_downstream_flanking_gene_name, 3rd_downstream_flanking_gene_name, 1st_upstream_flanking_gene_name, 2nd_upstream_flanking_gene_name, 3rd_upstream_flanking_gene_name, target_species_list_file_path, sequences_content_output_file_path, sequences_data_output_file_path):
+
 parser = argparse.ArgumentParser()
 parser.add_argument(
     "target_gene_name",
@@ -434,3 +436,7 @@ for current_species in species_list_file:
 species_list_file.close()
 sequences_output_file.close()
 sequences_data_file.close()
+
+
+if __name__ == "__main__":
+    main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7], sys.argv[8], sys.argv[9], sys.argv[10])
