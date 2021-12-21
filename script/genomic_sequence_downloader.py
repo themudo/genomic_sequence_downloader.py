@@ -154,7 +154,7 @@ def download_via_synteny_conservation():
                 + ","
                 + current_species
                 + ", Failed.  At least one of the "
-                + args._target_gene_name
+                + args.target_gene_name
                 + " flanking genes is not annotated in this species genome.\n"
             )
             return 0
@@ -358,6 +358,7 @@ def main(target_gene_name, first_downstream_flanking_gene_name, second_downstrea
 	global current_species
 	global sequences_data_file
 	global species_counter
+	global sequences_output_file
 	
 	parser = argparse.ArgumentParser()
 	parser.add_argument(
