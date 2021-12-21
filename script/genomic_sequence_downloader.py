@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import argparse
 import os
-
+import sys
 
 def check_target_gene_annotation_status():
     id = (
@@ -353,91 +353,96 @@ def download_via_synteny_conservation():
         )
 
 
-def main(target_gene_name, 1st_downstream_flanking_gene_name, 2nd_downstream_flanking_gene_name, 3rd_downstream_flanking_gene_name, 1st_upstream_flanking_gene_name, 2nd_upstream_flanking_gene_name, 3rd_upstream_flanking_gene_name, target_species_list_file_path, sequences_content_output_file_path, sequences_data_output_file_path):
+def main(target_gene_name, first_downstream_flanking_gene_name, second_downstream_flanking_gene_name, third_downstream_flanking_gene_name, first_upstream_flanking_gene_name, second_upstream_flanking_gene_name, third_upstream_flanking_gene_name, target_species_list_file_path, sequences_content_output_file_path, sequences_data_output_file_path):
+	global args
+	global current_species
+	global sequences_data_file
+	global species_counter
+	
+	parser = argparse.ArgumentParser()
+	parser.add_argument(
+	    "target_gene_name",
+	    metavar="-target_gene_name",
+	    type=str,
+	    help="Target Gene Name",
+	)
+	parser.add_argument(
+	    "first_downstream_gene_name",
+	    metavar="-1st_downstream_flanking_gene_name",
+	    type=str,
+	    help="1st Downstream Flanking Gene Name",
+	)
+	parser.add_argument(
+	    "second_downstream_gene_name",
+	    metavar="-2nd_downstream_flanking_gene_name",
+	    type=str,
+	    help="2nd Downstream Flanking Gene Name",
+	)
+	parser.add_argument(
+	    "third_downstream_gene_name",
+	    metavar="-3rd_downstream_flanking_gene_name",
+	    type=str,
+	    help="3rd Downstream Flanking Gene Name",
+	)
+	parser.add_argument(
+	    "first_upstream_gene_name",
+	    metavar="-1st_upstream_flanking_gene_name",
+	    type=str,
+	    help="1st Upstream Flanking Gene Name",
+	)
+	parser.add_argument(
+	    "second_upstream_gene_name",
+	    metavar="-2nd_upstream_flanking_gene_name",
+	    type=str,
+	    help="2nd Upstream Flanking Gene Name",
+	)
+	parser.add_argument(
+	    "third_upstream_gene_name",
+	    metavar="-3rd_upstream_flanking_gene_name",
+	    type=str,
+	    help="3rd Upstream Flanking Gene Name",
+	)
+	parser.add_argument(
+	    "target_species_list_file_path",
+	    metavar="-target_species_list_file_path",
+	    type=str,
+	    help="Target Species List File Path (.txt)",
+	)
+	parser.add_argument(
+	    "sequences_content_output_file_path",
+	    metavar="-sequences_content_output_file_path",
+	    type=str,
+	    help="Output Sequence Content File Path (FASTA)",
+	)
+	parser.add_argument(
+	    "sequences_data_output_file_path",
+	    metavar="-sequences_data_output_file_path",
+	    type=str,
+	    help="Output Sequence Data File Path (.csv)",
+	)
+	args = parser.parse_args()
+	
+	print("\nGenomic Sequence Downloader Script\n")
 
-parser = argparse.ArgumentParser()
-parser.add_argument(
-    "target_gene_name",
-    metavar="-target_gene_name",
-    type=str,
-    help="Target Gene Name",
-)
-parser.add_argument(
-    "first_downstream_gene_name",
-    metavar="-1st_downstream_flanking_gene_name",
-    type=str,
-    help="1st Downstream Flanking Gene Name",
-)
-parser.add_argument(
-    "second_downstream_gene_name",
-    metavar="-2nd_downstream_flanking_gene_name",
-    type=str,
-    help="2nd Downstream Flanking Gene Name",
-)
-parser.add_argument(
-    "third_downstream_gene_name",
-    metavar="-3rd_downstream_flanking_gene_name",
-    type=str,
-    help="3rd Downstream Flanking Gene Name",
-)
-parser.add_argument(
-    "first_upstream_gene_name",
-    metavar="-1st_upstream_flanking_gene_name",
-    type=str,
-    help="1st Upstream Flanking Gene Name",
-)
-parser.add_argument(
-    "second_upstream_gene_name",
-    metavar="-2nd_upstream_flanking_gene_name",
-    type=str,
-    help="2nd Upstream Flanking Gene Name",
-)
-parser.add_argument(
-    "third_upstream_gene_name",
-    metavar="-3rd_upstream_flanking_gene_name",
-    type=str,
-    help="3rd Upstream Flanking Gene Name",
-)
-parser.add_argument(
-    "target_species_list_file_path",
-    metavar="-target_species_list_file_path",
-    type=str,
-    help="Target Species List File Path (.txt)",
-)
-parser.add_argument(
-    "sequences_content_output_file_path",
-    metavar="-sequences_content_output_file_path",
-    type=str,
-    help="Output Sequence Content File Path (FASTA)",
-)
-parser.add_argument(
-    "sequences_data_output_file_path",
-    metavar="-sequences_data_output_file_path",
-    type=str,
-    help="Output Sequence Data File Path (.csv)",
-)
-args = parser.parse_args()
-
-print("\nGenomic Sequence Downloader Script\n")
-
-species_counter = 0
-species_list_file = open(args.target_species_list_file_path, "r")
-sequences_output_file = open(args.sequences_content_output_file_path, "w")
-sequences_data_file = open(args.sequences_data_output_file_path, "w")
-
-for current_species in species_list_file:
-    species_counter += 1
-    current_species = (
-        current_species.replace("\n", "").replace("_", " ").strip()
-    )
-    print("[" + str(species_counter) + " - " + current_species + "]")
-    check_target_gene_annotation_status()
-    print("\n")
-
-species_list_file.close()
-sequences_output_file.close()
-sequences_data_file.close()
-
+	species_counter = 0
+	species_list_file = open(args.target_species_list_file_path, "r")
+	sequences_output_file = open(args.sequences_content_output_file_path, "w")
+	sequences_data_file = open(args.sequences_data_output_file_path, "w")
+	
+	for current_species in species_list_file:
+	    species_counter += 1
+	    current_species = (
+	        current_species.replace("\n", "").replace("_", " ").strip()
+	    )
+	    print("[" + str(species_counter) + " - " + current_species + "]")
+	    check_target_gene_annotation_status()
+	    print("\n")
+	
+	species_list_file.close()
+	sequences_output_file.close()
+	sequences_data_file.close()
+	
 
 if __name__ == "__main__":
     main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7], sys.argv[8], sys.argv[9], sys.argv[10])
+
