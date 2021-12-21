@@ -11,8 +11,6 @@ with open(filename) as file:
     lines = file.readlines()
     lines = [line.rstrip() for line in lines]
 
-args = None
-
 for line in lines:
     #parse line to get all the parameters:
     genes = line.split()
