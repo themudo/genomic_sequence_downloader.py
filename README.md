@@ -6,7 +6,7 @@
 
 `genomic_sequence_downloader.py` is a Python script that allows for downloading the genomic sequence portion underlying a given target gene annotation across multiple species with annotated genomes available at [NCBI](https://www.ncbi.nlm.nih.gov/) (FASTA format). This script uses, on its basis, NCBI Entrez APIs, making use of the latest annotation version of each target species genome.
 
-The script can be run in batch mode using 'batch_gsd.py'. For that you need to specify two text input files, one with a list of the scientific names of the species you are interested in, one per line; and one with the list of genes of interest: each line should have (tab-separated) name of gene followed by the name of three upstream genes, and three downstream genes.
+The script can be run in batch mode using `batch_gsd.py`. For that you need to specify two text input files, one with a list of the scientific names of the species you are interested in, one per line; and one with the list of genes of interest: each line should have (tab-separated) name of gene followed by the name of three upstream genes, and three downstream genes.
 <br>
 
 ### Dependencies
